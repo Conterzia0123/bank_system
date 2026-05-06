@@ -8,12 +8,11 @@ on:
 
 jobs:
   build:
-    # 1. Khai báo chiến lược Matrix cho 3 hệ điều hành
     strategy:
+      fail-fast: false # THÊM DÒNG NÀY ĐỂ GITHUB KHÔNG HỦY CÁC JOB CÒN LẠI KHI CÓ LỖI
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         
-    # 2. Thay vì gán cứng (ví dụ: ubuntu-latest), ta truyền biến từ matrix vào
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -34,7 +33,6 @@ jobs:
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        # Thêm biến matrix.os vào tên để tránh bị ghi đè artifact của nhau
         name: bank-system-artifact-${{ matrix.os }} 
         path: target/*.jar
         retention-days: 5
