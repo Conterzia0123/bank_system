@@ -26,13 +26,24 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build with Maven
-      run: mvn -B clean package
+    # Thay đổi 'package' thành 'verify' để đảm bảo chạy qua pha kiểm tra của JaCoCo
+    - name: Build and Verify with Maven
+      run: mvn -B clean verify
 
+    # Giữ lại action upload file .jar (nếu muốn)
     - name: Upload JAR Artifact
       uses: actions/upload-artifact@v4
       if: success()
       with:
         name: bank-system-artifact-${{ matrix.os }} 
         path: target/*.jar
+        retention-days: 5
+
+    # BỔ SUNG: Trích xuất và lưu trữ báo cáo bao phủ code của JaCoCo
+    - name: Upload JaCoCo Coverage Report
+      uses: actions/upload-artifact@v4
+      if: always() # Luôn upload báo cáo kể cả khi build bị fail do không đạt 80%
+      with:
+        name: jacoco-report-${{ matrix.os }}
+        path: target/site/jacoco/
         retention-days: 5
