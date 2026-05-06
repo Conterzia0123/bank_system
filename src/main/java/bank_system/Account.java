@@ -15,7 +15,7 @@ public abstract class Account {
     public static final String SAVINGS_TYPE = "SAVINGS";
 
     private long accountNumber;
-    private double balance;
+    private double b;
     protected List<Transaction> transactionList;
 
     /**
