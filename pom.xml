@@ -130,6 +130,23 @@
                     </execution>
                 </executions>
             </plugin>
+
+	    <!-- Maven JAR Plugin: Cấu hình file thực thi -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!-- Chú ý: Thay đường dẫn này bằng class chứa hàm main thực tế của bạn -->
+                            <mainClass>bank_system.Bank</mainClass> 
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 </project>
