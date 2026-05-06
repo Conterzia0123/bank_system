@@ -8,12 +8,14 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!-- Cấu hình Java 17 để tương thích với Hibernate 6 và Logback 1.4 -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
+        <!-- JUnit Jupiter (JUnit 5) cho kiểm thử -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -21,6 +23,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Logging: SLF4J và Logback (Bài 9) -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -32,12 +35,14 @@
             <version>1.4.11</version>
         </dependency>
 
+        <!-- Hibernate Core (Bài 1) -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>6.2.0.Final</version>
         </dependency>
 
+        <!-- Các thư viện bổ trợ khác -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -52,18 +57,37 @@
 
     <build>
         <plugins>
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
             </plugin>
 
+            <!-- Maven Surefire Plugin: Chạy JUnit 5 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
             </plugin>
 
+            <!-- BÀI 8: Maven JAR Plugin - Cấu hình điểm khởi chạy (Main-Class) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!-- Trỏ vào lớp Main bạn vừa tạo ở bài 8 -->
+                            <mainClass>bank_system.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- BÀI 2: Checkstyle Plugin - Kiểm tra Google Style -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -85,20 +109,18 @@
                 </executions>
             </plugin>
 
-	    <!-- JaCoCo Plugin: Đo lường độ bao phủ code -->
+            <!-- BÀI 5: JaCoCo Plugin - Đo lường và ép ngưỡng 80% coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
                 <executions>
-                    <!-- Gắn JaCoCo agent vào quá trình test -->
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <!-- Tạo báo cáo HTML sau khi test xong -->
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
@@ -106,7 +128,6 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    <!-- Cấu hình quy tắc nghiêm ngặt: Fail build nếu coverage < 80% -->
                     <execution>
                         <id>check</id>
                         <phase>verify</phase>
@@ -121,7 +142,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum> <!-- Ngưỡng 80% -->
+                                            <minimum>0.80</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -130,23 +151,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-	    <!-- Maven JAR Plugin: Cấu hình file thực thi -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <!-- Chú ý: Thay đường dẫn này bằng class chứa hàm main thực tế của bạn -->
-                            <mainClass>bank_system.Bank</mainClass> 
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 </project>
