@@ -47,3 +47,11 @@ jobs:
         name: jacoco-report-${{ matrix.os }}
         path: target/site/jacoco/
         retention-days: 5
+
+    # Thêm step này để Bot tự động comment lỗi Checkstyle vào PR
+    - name: Checkstyle Review
+      uses: dbelyaev/action-checkstyle@master
+      if: github.event_name == 'pull_request' # Chỉ chạy khi có Pull Request
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        level: warning
