@@ -65,4 +65,20 @@ class BankSystemTest {
         checking.deposit(-100.0);
         assertEquals(1000.0, checking.getBalance(), "Số dư không đổi khi nạp tiền âm");
     }
+
+    @Test
+    @DisplayName("Kiểm tra đường dẫn file (Cố tình lỗi trên Linux/MacOS)")
+    void testFilePathHardcoded() {
+        String folder = "exports";
+        String fileName = "transactions.csv";
+        
+        // Cố tình nối chuỗi bằng dấu gạch chéo cứng của Windows (\)
+        String hardcodedPath = folder + "\\" + fileName;
+        
+        // Lấy định dạng chuẩn của hệ điều hành hiện tại đang chạy code để so sánh
+        String expectedPath = folder + java.io.File.separator + fileName;
+        
+        // Test này sẽ PASS trên Windows, nhưng FAIL CHẮC CHẮN trên Ubuntu và macOS
+        assertEquals(expectedPath, hardcodedPath, "Đường dẫn không tương thích đa nền tảng!");
+    }
 }
