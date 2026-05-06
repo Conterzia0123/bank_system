@@ -66,6 +66,7 @@ class BankSystemTest {
         assertEquals(1000.0, checking.getBalance(), "Số dư không đổi khi nạp tiền âm");
     }
 
+    /*	
     @Test
     @DisplayName("Kiểm tra đường dẫn file (Cố tình lỗi trên Linux/MacOS)")
     void testFilePathHardcoded() {
@@ -81,4 +82,23 @@ class BankSystemTest {
         // Test này sẽ PASS trên Windows, nhưng FAIL CHẮC CHẮN trên Ubuntu và macOS
         assertEquals(expectedPath, hardcodedPath, "Đường dẫn không tương thích đa nền tảng!");
     }
+    */
+
+    @Test
+    @DisplayName("Kiểm tra đường dẫn file (Đã Refactor - Tương thích mọi OS)")
+    void testFilePathRefactored() {
+        String folder = "exports";
+        String fileName = "transactions.csv";
+        
+        // REFACTOR: Sử dụng java.nio.file.Paths để hệ thống tự xử lý dấu phân cách
+        java.nio.file.Path path = java.nio.file.Paths.get(folder, fileName);
+        
+        // Lấy định dạng phân cách chuẩn của hệ điều hành hiện tại (File.separator)
+        String expectedPath = folder + java.io.File.separator + fileName;
+        
+        // KIỂM TRA: Đường dẫn sinh ra từ thư viện Paths phải khớp tuyệt đối 
+        // với chuẩn đường dẫn của hệ điều hành đang chạy.
+        assertEquals(expectedPath, path.toString(), "Đường dẫn đã tương thích đa nền tảng!");
+    }
+
 }
